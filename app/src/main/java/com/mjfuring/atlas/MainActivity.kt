@@ -1,38 +1,27 @@
 package com.mjfuring.atlas
 
-import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 
-class MainActivity : AppCompatActivity() {
+import com.mapbox.mapboxsdk.Mapbox
+import com.mjfuring.atlas.databinding.ActivityMainBinding
+import com.mjfuring.base.BaseActivity
+import com.mjfuring.base.view.DialogYesNo
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+    override fun layoutRes() = R.layout.activity_main
+
+    override fun onInit() {
+        Mapbox.getInstance(this, BuildConfig.MAPBOX_ACCESS_TOKEN)
+    }
+
+    override fun onBackPressed() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_main)
+        val count = navHostFragment?.childFragmentManager?.backStackEntryCount
+        if (count == 0){
+            DialogYesNo(this, { finish() }).show(getString(R.string.msg_close_app))
+            return
         }
+        super.onBackPressed()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 }
