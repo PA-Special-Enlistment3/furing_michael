@@ -35,12 +35,13 @@ class SetupFragment: BaseFragment<FragmentSetupBinding>() {
     inner class SetupViewPager(fm: FragmentManager): BaseFragmentPager(fm){
         override fun getItem(pos: Int): Fragment {
             return when(pos){
-                1 -> DownloadMapFragment()
+                2 -> DownloadMapFragment()
+                1 -> ContactFragment()
                 else -> PermissionFragment()
             }
         }
         override fun getCount(): Int {
-            return 2
+            return 3
         }
     }
 

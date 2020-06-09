@@ -17,7 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 import kotlin.math.roundToInt
 
-
 class DownloadMapFragment: BaseMapFragment<FragmentMapDownloadBinding>(){
 
     private val vmSetup: VmSetup by sharedViewModel()
@@ -32,7 +31,7 @@ class DownloadMapFragment: BaseMapFragment<FragmentMapDownloadBinding>(){
         offlineManager = OfflineManager.getInstance(requireContext())
         viewBinding?.apply {
             back.setOnClickListener {
-                vmSetup.gotoFragment(0)
+                vmSetup.gotoFragment(1)
             }
             btnDownload.setOnClickListener {
                 showMap()

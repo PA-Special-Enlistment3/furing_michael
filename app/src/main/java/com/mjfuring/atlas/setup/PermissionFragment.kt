@@ -20,6 +20,7 @@ class PermissionFragment: BaseFragment<FragmentPermissionBinding>() {
             }
             btnRequest.setOnClickListener {
                 if(isPermitted()) {
+                    vmSetup.getContacts(requireContext())
                     vmSetup.gotoFragment(1)
                 }
             }

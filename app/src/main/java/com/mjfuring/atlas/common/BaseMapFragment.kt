@@ -37,6 +37,7 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory.*
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.mjfuring.atlas.R
+import com.mjfuring.atlas.db.model.Incident
 import com.mjfuring.base.Base
 import com.mjfuring.base.view.Dialog
 
@@ -357,6 +358,40 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
 
         }
     }
+
+    private fun createFeature(request: Incident): Feature {
+        request.apply {
+            return Feature.fromGeometry(
+                Point.fromLngLat(longitude, latitude)
+            ).apply {
+                addBooleanProperty(PROPERTY_SELECTED, false)
+                addStringProperty(PROPERTY_NAME, number)
+                addNumberProperty(PROPERTY_ID, id)
+                addStringProperty(ICON_PROPERTY, RED_ICON_ID)
+            }
+        }
+    }
+
+    fun addMarkers(request: List<Incident>){
+        symbolLayers.clear()
+        request.forEach {
+            symbolLayers.add(createFeature(it))
+        }
+        collection = FeatureCollection.fromFeatures(symbolLayers)
+
+        refreshSource()
+    }
+
+    fun fitInBox(request: List<Incident>){
+        if (request.size > 1){
+            val bounds = LatLngBounds.Builder()
+            request.forEach {
+                bounds.include(LatLng(it.latitude, it.longitude))
+            }
+            map?.easeCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100), 2000)
+        }
+    }
+
 
 
 }
