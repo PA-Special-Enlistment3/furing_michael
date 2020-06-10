@@ -22,7 +22,12 @@ class ContactFragment: BaseFragment<FragmentSetupContactsBinding>() {
                 vmSetup.gotoFragment(0)
             }
             btnSave.setOnClickListener {
-                vmSetup.importContact(listAdapter.getSelected())
+                val contacts = listAdapter.getSelected()
+                if (contacts.size > 0){
+                    vmSetup.importContact(contacts)
+                } else {
+                    showWarnDialog(R.string.msg_select_contact)
+                }
             }
             rvContacts.apply {
                 hasFixedSize()

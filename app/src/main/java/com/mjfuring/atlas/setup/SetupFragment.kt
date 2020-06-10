@@ -20,6 +20,7 @@ class SetupFragment: BaseFragment<FragmentSetupBinding>() {
         setupViewPager = SetupViewPager(childFragmentManager)
         viewBinding?.vpNoSwipe?.apply {
             adapter = setupViewPager
+            offscreenPageLimit = 0
             observeEvents()
         }
     }

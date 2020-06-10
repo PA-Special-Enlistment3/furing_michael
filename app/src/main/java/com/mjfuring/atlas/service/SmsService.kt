@@ -1,8 +1,10 @@
 package com.mjfuring.atlas.service
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Binder
@@ -43,10 +45,9 @@ class SmsService : Service(), SmsListener {
     private val binder = SmsBinder()
     private var isBound = false
 
-
-
     override fun onCreate() {
         super.onCreate()
+
         registerReceiver(
             smsReceiver,
             IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)
@@ -180,21 +181,6 @@ class SmsService : Service(), SmsListener {
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this,
             0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.channel_name)
-            val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-
 
         val builder = NotificationCompat.Builder(this, "channel_id")
             .setSmallIcon(R.drawable.ic_arrow_back_wide)

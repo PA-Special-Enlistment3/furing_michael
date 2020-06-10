@@ -20,8 +20,8 @@ class PermissionFragment: BaseFragment<FragmentPermissionBinding>() {
             }
             btnRequest.setOnClickListener {
                 if(isPermitted()) {
-                    vmSetup.getContacts(requireContext())
                     vmSetup.gotoFragment(1)
+                    vmSetup.getContacts(requireContext())
                 }
             }
         }
@@ -35,6 +35,7 @@ class PermissionFragment: BaseFragment<FragmentPermissionBinding>() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(isPermitted(false)){
             vmSetup.gotoFragment(1)
+            vmSetup.getContacts(requireContext())
         } else {
             showErrorDialog(R.string.msg_permission_not_granted)
         }

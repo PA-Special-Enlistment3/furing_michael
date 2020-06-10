@@ -80,6 +80,7 @@ class IncidentDetail: BaseFragment<FragmentIncidentDetailBinding>() {
                 btnRespond.isVisible = incident.status == PENDING
             } else {
                 vmMain.listRespondent(incident.id)
+                lblFrom.isVisible = false
                 tvFrom.isVisible = false
                 btnRespond.isVisible = false
             }

@@ -24,6 +24,7 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
 
     private val vmMain: VmMain by sharedViewModel()
     private var currentLoc = LatLong()
+    private var mapIsReady = false
 
     override fun layoutRes(): Int = R.layout.fragment_home
     override fun mapRes(): Int = R.id.mapView
@@ -42,11 +43,14 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
 
     override fun mapReady(map: MapboxMap) {
         map.setStyle(Style.MAPBOX_STREETS){
+            firstTrackSuccess = false
+            clearMarkers()
             setupSource(it)
             setUpImage(it)
             setUpMarkerLayer(it)
             setUpInfoWindowLayer(it)
             enableLocationComponent(it)
+            mapIsReady = true
         }
         map.addOnMapClickListener {
             onClickIcon(map.projection.toScreenLocation(it))
@@ -67,6 +71,16 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
             HomeFragmentDirections.actionNavHomeToNavIncidentDetail(id, currentLoc)
         )
     }
+
+/*
+    override fun onResume() {
+        super.onResume()
+        if (mapIsReady){
+            vmMain.listRequest()
+        }
+    }
+*/
+
 
     private fun observeEvents() {
         vmMain.apply {

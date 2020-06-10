@@ -38,7 +38,7 @@ object RespondentStatus {
 
 fun Int.toRespondentStatus(): String{
     return when(this){
-        SENT -> "Sent"
+        SENT -> "Incident Reported"
         RespondentStatus.RESPONDING -> "Responding"
         ARRIVED -> "Arrived"
         RespondentStatus.FAILED -> "Failed"

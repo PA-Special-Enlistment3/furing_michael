@@ -394,6 +394,11 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
             map?.easeCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100), 2000)
         }
     }
+    fun clearMarkers(){
+        symbolLayers.clear()
+        collection = FeatureCollection.fromFeatures(symbolLayers)
+        refreshSource()
+    }
 
 
 

@@ -140,6 +140,7 @@
 
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/btn_respond"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"

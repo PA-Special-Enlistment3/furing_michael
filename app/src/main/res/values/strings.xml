@@ -34,6 +34,7 @@
     <string name="msg_permission_not_granted">Some permission are not granted</string>
     <string name="msg_incident_completed">Are you sure you want to mark this incident as completed</string>
     <string name="msg_incident_invalid">Are you sure you want to mark this incident as invalid</string>
+    <string name="msg_select_contact">Please select at least 1 contact</string>
 
 
 

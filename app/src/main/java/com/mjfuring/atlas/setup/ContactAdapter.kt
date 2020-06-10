@@ -28,7 +28,17 @@ class ContactAdapter: BaseAdapter() {
 
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
         private val tvNumber = itemView.findViewById<TextView>(R.id.tv_number)
-        private val cbSelected = itemView.findViewById<CheckBox>(R.id.cb_selected)
+        private val cbSelected = itemView.findViewById<CheckBox>(R.id.cb_selected).apply {
+            setOnClickListener {
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    items[adapterPosition].apply {
+                        if (this is Contact) {
+                            selected = isChecked
+                        }
+                    }
+                }
+            }
+        }
 
         override fun bind(any: Any) {
             if (any is Contact) {
