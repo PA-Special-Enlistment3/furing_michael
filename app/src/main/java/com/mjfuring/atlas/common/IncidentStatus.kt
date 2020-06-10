@@ -15,7 +15,6 @@ object IncidentStatus {
     const val COMPLETED: Int = 3
     const val INVALID: Int = 4
     const val DUPLICATE: Int = 5
-
 }
 
 fun Int.toRequestStatus(): String{

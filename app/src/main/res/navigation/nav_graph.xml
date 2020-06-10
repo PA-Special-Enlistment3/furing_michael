@@ -16,16 +16,12 @@
             app:destination="@id/nav_setup"
             app:popUpTo="@id/nav_splash"
             app:popUpToInclusive="true"
-            app:popEnterAnim="@anim/slide_right_enter"
-            app:popExitAnim="@anim/slide_right_exit"
             />
         <action
             android:id="@+id/action_nav_splash_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@id/nav_splash"
-            app:popUpToInclusive="true"
-            app:popEnterAnim="@anim/slide_right_enter"
-            app:popExitAnim="@anim/slide_right_exit"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -38,9 +34,7 @@
             android:id="@+id/action_nav_setup_to_nav_home"
             app:destination="@id/nav_home"
             app:popUpTo="@id/nav_splash"
-            app:popUpToInclusive="true"
-            app:popEnterAnim="@anim/slide_right_enter"
-            app:popExitAnim="@anim/slide_right_exit"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -55,6 +49,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_incident_create"
             app:destination="@id/nav_incident_create" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_history"
+            app:destination="@id/nav_history" />
     </fragment>
 
     <fragment
@@ -78,6 +75,16 @@
         <argument
             android:name="latlong"
             app:argType="com.mjfuring.atlas.db.model.LatLong" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.mjfuring.atlas.history.FragmentHistory"
+        android:label="@string/history"
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_nav_history_to_nav_incident_detail"
+            app:destination="@id/nav_incident_detail" />
     </fragment>
 
 </navigation>

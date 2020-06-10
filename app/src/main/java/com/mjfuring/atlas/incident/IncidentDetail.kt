@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mjfuring.atlas.R
 import com.mjfuring.atlas.VmMain
+import com.mjfuring.atlas.common.IncidentStatus.COMPLETED
 import com.mjfuring.atlas.common.IncidentStatus.PENDING
 import com.mjfuring.atlas.common.toRequestStatus
 import com.mjfuring.atlas.databinding.FragmentIncidentDetailBinding
@@ -53,6 +54,11 @@ class IncidentDetail: BaseFragment<FragmentIncidentDetailBinding>() {
         vmMain.apply {
             observeData<List<Respondent>>(listRespondentEvent, {
                 listAdapter.clearItems()
+                if (incident.status >= COMPLETED){
+                    it.forEach { respondent ->
+                        respondent.status = 10
+                    }
+                }
                 listAdapter.addItems(it)
             })
             observeData<Incident>(getEvent, {

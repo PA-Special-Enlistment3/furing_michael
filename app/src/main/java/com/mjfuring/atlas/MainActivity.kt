@@ -70,3 +70,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), ServiceListener {
 }
 
 //{cmd:1,nat:"test",ref=4,lat:12.9794,lon:124.0271}
+
+//{cmd:2,ref=1,lat:12.9794,lon:124.0271}

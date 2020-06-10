@@ -72,16 +72,6 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
         )
     }
 
-/*
-    override fun onResume() {
-        super.onResume()
-        if (mapIsReady){
-            vmMain.listRequest()
-        }
-    }
-*/
-
-
     private fun observeEvents() {
         vmMain.apply {
             observeData<List<Incident>>(listEvent, {
@@ -96,6 +86,11 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
             R.id.action_create -> {
                 findNavController().navigate(
                    HomeFragmentDirections.actionNavHomeToNavIncidentCreate(currentLoc)
+                )
+            }
+            R.id.action_history -> {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionNavHomeToNavHistory()
                 )
             }
         }
