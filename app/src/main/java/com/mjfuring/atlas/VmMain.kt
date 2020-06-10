@@ -57,10 +57,10 @@ class VmMain(
         }
     }
 
-    fun listRespondent(ref: Long){
+    fun listRespondent(id: Long){
         viewModelScope.launch(Dispatchers.IO) {
             listRespondentEvent.posting()
-            listRespondentEvent.success(respondentDao.listByRequest())
+            listRespondentEvent.success(respondentDao.listByRequest(id))
         }
     }
 
@@ -81,20 +81,20 @@ class VmMain(
 
             contacts.forEach {
 
-                val respondentId = respondentDao.add(Respondent(
+                /*val respondentId = respondentDao.add(Respondent(
                     ref = id,
                     name = it.name,
                     number = it.number,
                     status = FAILED
                 ))
-
+*/
                 try {
                     val sentIntent = PendingIntent.getBroadcast(context, 0,
-                        Intent(INCIDENT_SMS).apply { putExtra(ID, respondentId) }, 0)
+                        Intent(INCIDENT_SMS), 0)
                     SmsManager.getDefault().sendTextMessage(it.number, null,
-                      "{cmd:${Commands.REQUEST},nat:\"${incident.title}\"}"
+                      "{cmd:${Commands.REQUEST},nat:\"${incident.title}\",ref:${id},lat:${incident.latitude},lon:${incident.longitude}}"
                         , sentIntent, null)
-                    respondentDao.updateStatus(respondentId, SENT)
+                    //respondentDao.updateStatus(respondentId, SENT)
                 } catch (e: Exception) {
                     Timber.e(e)
                 }

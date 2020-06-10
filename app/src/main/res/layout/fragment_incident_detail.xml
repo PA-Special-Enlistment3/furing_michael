@@ -10,41 +10,19 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/margin_20">
+            android:layout_height="match_parent">
 
 
-            <ImageButton
-                android:id="@+id/back"
-                android:src="@drawable/ic_arrow_back_wide"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:paddingStart="-25dp"
-                android:paddingEnd="10dp"
-                android:tint="@color/color_head"
-                android:background="?attr/selectableItemBackground"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <ImageButton
-                android:id="@+id/btn_more"
-                android:src="@drawable/ic_more"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:tint="@color/color_head"
-                android:background="?attr/selectableItemBackground"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_title"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:titleTextColor="@color/color_head"
+                app:title="@string/title_incident_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_incident_detail"
-                android:textColor="@color/color_head"
-                android:textSize="@dimen/font_20"
-                android:layout_marginTop="@dimen/margin_6"
-                app:layout_constraintTop_toBottomOf="@id/back" />
+                android:background="@color/colorPrimary"
+                app:menu="@menu/menu_incident"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/lbl_nature"
@@ -52,10 +30,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_title"
                 android:textColor="@color/color_head"
-                android:textSize="@dimen/font_20"
+                android:textSize="@dimen/font_18"
+                android:layout_marginStart="@dimen/margin_20"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_nature"
-                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintBottom_toTopOf="@id/lbl_from"
                 app:layout_constraintVertical_chainStyle="packed"/>
 
@@ -64,8 +43,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_head"
-                android:textSize="@dimen/font_20"
+                android:textSize="@dimen/font_18"
                 android:gravity="center"
+                android:layout_marginEnd="@dimen/margin_20"
                 app:layout_constraintStart_toEndOf="@id/lbl_nature"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/lbl_nature"
@@ -78,7 +58,8 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/label_reported"
                 android:textColor="@color/color_head"
-                android:textSize="@dimen/font_20"
+                android:textSize="@dimen/font_18"
+                android:layout_marginStart="@dimen/margin_20"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_nature"
                 app:layout_constraintTop_toBottomOf="@id/lbl_nature"
@@ -91,8 +72,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_head"
-                android:textSize="@dimen/font_20"
+                android:textSize="@dimen/font_18"
                 android:gravity="center"
+                android:layout_marginEnd="@dimen/margin_20"
                 app:layout_constraintStart_toEndOf="@id/lbl_from"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/lbl_from"
@@ -105,7 +87,8 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/label_stat"
                 android:textColor="@color/color_head"
-                android:textSize="@dimen/font_20"
+                android:textSize="@dimen/font_18"
+                android:layout_marginStart="@dimen/margin_20"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_nature"
                 app:layout_constraintTop_toBottomOf="@id/lbl_from"
@@ -118,8 +101,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_head"
-                android:textSize="@dimen/font_20"
+                android:textSize="@dimen/font_18"
                 android:gravity="center"
+                android:layout_marginEnd="@dimen/margin_20"
                 app:layout_constraintStart_toEndOf="@id/lbl_status"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/lbl_status"
@@ -131,12 +115,10 @@
                 android:id="@+id/rv_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_20"
-                android:layout_marginBottom="@dimen/margin_20"
+                android:layout_margin="@dimen/margin_20"
                 app:layout_constraintTop_toBottomOf="@id/lbl_status"
                 app:layout_constraintBottom_toTopOf="@id/btn_respond"
                 app:layout_constraintVertical_chainStyle="packed"/>
-
 
 
             <Button

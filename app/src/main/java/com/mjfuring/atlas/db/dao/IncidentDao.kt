@@ -15,7 +15,7 @@ interface IncidentDao {
     suspend fun getById(id: Long): Incident
 
     @Query("SELECT * FROM incident WHERE ref = :ref LIMIT 1")
-    suspend fun getByRef(ref: Long): Incident?
+    suspend fun getByRef(ref: Long): Incident
 
     @Query("SELECT * FROM incident where status>=:status order by dateCompleted desc")
     suspend fun listCompleted(status: Int = COMPLETED): List<Incident>

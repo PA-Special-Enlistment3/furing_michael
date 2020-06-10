@@ -14,13 +14,13 @@
         <action
             android:id="@+id/action_nav_splash_to_nav_setup"
             app:destination="@id/nav_setup"
-            app:popUpTo="@id/nav_splash"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true"
             />
         <action
             android:id="@+id/action_nav_splash_to_nav_home"
             app:destination="@id/nav_home"
-            app:popUpTo="@id/nav_splash"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -33,7 +33,7 @@
         <action
             android:id="@+id/action_nav_setup_to_nav_home"
             app:destination="@id/nav_home"
-            app:popUpTo="@id/nav_splash"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -75,6 +75,9 @@
         <argument
             android:name="latlong"
             app:argType="com.mjfuring.atlas.db.model.LatLong" />
+        <action
+            android:id="@+id/action_nav_incident_detail_to_nav_track"
+            app:destination="@id/nav_track" />
     </fragment>
 
     <fragment
@@ -85,6 +88,17 @@
         <action
             android:id="@+id/action_nav_history_to_nav_incident_detail"
             app:destination="@id/nav_incident_detail" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_track"
+        android:name="com.mjfuring.atlas.track.FragmentTrack"
+        android:label="@string/track"
+        tools:layout="@layout/fragment_track">
+        <argument
+            android:name="incident"
+            app:argType="com.mjfuring.atlas.db.model.Incident" />
     </fragment>
 
 </navigation>

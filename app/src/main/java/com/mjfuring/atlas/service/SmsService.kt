@@ -82,7 +82,6 @@ class SmsService : Service(), SmsListener {
         Timber.d("$tag Sms Received")
         var isValid = false
         try {
-
             val json = Gson().fromJson(message, JsonSms::class.java)
             json.apply {
                 when (json.cmd) {
@@ -105,6 +104,7 @@ class SmsService : Service(), SmsListener {
                             longitude = lon,
                             dateReceived = time
                         )
+                        respondent.number.replace("+63", "0")
                         isValid = parseResponse(respondent)
                     }
                     else -> {
@@ -163,13 +163,27 @@ class SmsService : Service(), SmsListener {
     private fun parseResponse(respondent: Respondent): Boolean {
         return runBlocking {
             withContext(Dispatchers.Default) {
+
+                val contact = contactDao.getByNumber(respondent.number)
+                if (contact != null){
+                    respondent.name = contact.name
+                } else {
+                    respondent.name = "Unknown"
+                }
+
+                respondent.status = RespondentStatus.RESPONDING
                 incidentDao.setResponded(respondent.ref)
-                val id = respondentDao.getByNumber(respondent.ref, respondent.number)
+                respondentDao.add(respondent)
+
+                showNotification(respondent)
+
+
+               /* val id = respondentDao.getByNumber(respondent.ref, respondent.number)
                 if (id > 0){
                     respondent.id = id
                     respondentDao.updateStatus(id, RespondentStatus.RESPONDING)
                     showNotification(respondent)
-                }
+                }*/
                 false
             }
         }
@@ -184,7 +198,8 @@ class SmsService : Service(), SmsListener {
 
         val builder = NotificationCompat.Builder(this, "channel_id")
             .setSmallIcon(R.drawable.ic_arrow_back_wide)
-            .setContentTitle("${respondent.number} is responding to incident")
+            .setContentTitle(respondent.name)
+            .setContentText("${respondent.number} is responding to incident")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

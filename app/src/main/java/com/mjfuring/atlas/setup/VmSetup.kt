@@ -24,6 +24,7 @@ class VmSetup(
     val fragmentEvent = EventLiveData()
     val contactEvent = EventLiveData()
     val importEvent = EventLiveData()
+    val homeEvent = EventLiveData()
 
     fun gotoFragment(pos: Int){
         fragmentEvent.success(pos)
@@ -38,6 +39,7 @@ class VmSetup(
             putBoolean(PREF_MAP_DOWNLOAD, true)
             apply()
         }
+        homeEvent.success()
     }
 
     fun getContacts(context: Context){

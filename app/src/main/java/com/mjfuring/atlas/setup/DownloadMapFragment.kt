@@ -188,9 +188,6 @@ class DownloadMapFragment: BaseMapFragment<FragmentMapDownloadBinding>(){
 
     private fun goToHome(){
         vmSetup.mapDownloaded()
-        findNavController().navigate(
-            SetupFragmentDirections.actionNavSetupToNavHome()
-        )
     }
 
 }

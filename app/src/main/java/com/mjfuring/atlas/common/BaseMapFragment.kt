@@ -41,6 +41,7 @@ import com.mjfuring.atlas.db.model.Incident
 import com.mjfuring.atlas.db.model.LatLong
 import com.mjfuring.base.Base
 import com.mjfuring.base.view.Dialog
+import timber.log.Timber
 
 
 abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, PermissionsListener {
@@ -334,15 +335,19 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
 
     private inner class LocationChangeListeningCallback: LocationEngineCallback<LocationEngineResult> {
         override fun onSuccess(result: LocationEngineResult?) {
-            result?.lastLocation?.apply {
-                map?.apply {
-                    locationComponent.forceLocationUpdate(result.lastLocation)
-                    if (!firstTrackSuccess){
-                        firstTrackSuccess = true
-                        onFirstTrack(LatLng(latitude, longitude))
+            try{
+                result?.lastLocation?.apply {
+                    map?.apply {
+                        locationComponent.forceLocationUpdate(result.lastLocation)
+                        if (!firstTrackSuccess){
+                            firstTrackSuccess = true
+                            onFirstTrack(LatLng(latitude, longitude))
+                        }
+                        onLocationUpdate(LatLong(latitude, longitude))
                     }
-                    onLocationUpdate(LatLong(latitude, longitude))
                 }
+            } catch (e: Exception) {
+                Timber.e(e)
             }
         }
         override fun onFailure(exception: Exception) {}
@@ -400,6 +405,9 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
         refreshSource()
     }
 
-
+    fun addMarker(incident: Incident){
+        symbolLayers.clear()
+        symbolLayers.add(createFeature(incident))
+    }
 
 }

@@ -18,6 +18,8 @@
     <string name="map">Map</string>
     <string name="setup">Setup</string>
     <string name="history">History</string>
+    <string name="track">Track</string>
+
     <string name="settings">Settings</string>
     <string name="search_contacts">Search contacts</string>
     <string name="create_incident">Create Incident</string>

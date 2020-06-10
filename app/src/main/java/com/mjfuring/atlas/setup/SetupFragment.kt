@@ -2,6 +2,7 @@ package com.mjfuring.atlas.setup
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.mjfuring.atlas.R
 import com.mjfuring.atlas.databinding.FragmentSetupBinding
 import com.mjfuring.atlas.databinding.FragmentSplashBinding
@@ -29,6 +30,11 @@ class SetupFragment: BaseFragment<FragmentSetupBinding>() {
         vmSetup.apply {
             observeData<Int>(fragmentEvent, {
                 viewBinding?.vpNoSwipe?.currentItem = it
+            })
+            observeNoData(homeEvent, {
+                findNavController().navigate(
+                    SetupFragmentDirections.actionNavSetupToNavHome()
+                )
             })
         }
     }

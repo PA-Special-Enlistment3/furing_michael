@@ -2,6 +2,7 @@ package com.mjfuring.atlas.db.dao
 
 import androidx.room.*
 import com.mjfuring.atlas.db.model.Contact
+import com.mjfuring.atlas.db.model.Incident
 
 @Dao
 interface ContactDao {
@@ -17,5 +18,9 @@ interface ContactDao {
 
     @Query("UPDATE contact SET name=:name, number=:number WHERE id = :id")
     suspend fun update(id: Int, name: String, number: String)
+
+    @Query("SELECT * FROM contact WHERE number = :no LIMIT 1")
+    suspend fun getByNumber(no: String): Contact?
+
 
 }

@@ -11,13 +11,13 @@ interface RespondentDao {
     @Query("SELECT * FROM respondent WHERE ref = :ref AND number = :no LIMIT 1")
     suspend fun findDuplicate(ref: Long, no: String): Respondent?
 
-    @Query("SELECT * FROM respondent order by dateReceived")
-    suspend fun listByRequest(): List<Respondent>
+    @Query("SELECT * FROM respondent WHERE ref = :id order by dateReceived")
+    suspend fun listByRequest(id: Long): List<Respondent>
 
     @Query("SELECT id FROM respondent  WHERE ref = :ref AND number = :no LIMIT 1" )
     suspend fun getByNumber(ref: Long, no: String): Long
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(model: Respondent): Long
 
     @Query("UPDATE respondent SET status=:status WHERE id = :id")

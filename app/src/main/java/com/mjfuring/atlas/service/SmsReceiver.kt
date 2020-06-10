@@ -23,6 +23,8 @@ class SmsReceiver: BroadcastReceiver() {
             smsTime = smsMessage.timestampMillis
         }
 
+        smsSender = smsSender.replace("+63", "0")
+
         val launchActivity = smsListener?.onReceivedSms(smsSender, smsBody, smsTime)
         launchActivity?.apply {
             if(this){

@@ -3,6 +3,7 @@ package com.mjfuring.atlas.incident
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mjfuring.atlas.R
 import com.mjfuring.atlas.VmMain
@@ -13,6 +14,7 @@ import com.mjfuring.atlas.databinding.FragmentIncidentDetailBinding
 import com.mjfuring.atlas.db.model.Incident
 import com.mjfuring.atlas.db.model.LatLong
 import com.mjfuring.atlas.db.model.Respondent
+import com.mjfuring.atlas.home.HomeFragmentDirections
 import com.mjfuring.atlas.incident.IncidentDetailArgs.fromBundle
 import com.mjfuring.base.BaseFragment
 import com.mjfuring.base.view.DialogYesNo
@@ -35,11 +37,13 @@ class IncidentDetail: BaseFragment<FragmentIncidentDetailBinding>() {
         latlong = fromBundle(requireArguments()).latlong
 
         viewBinding?.apply {
+            toolbar.apply {
+                setOnMenuItemClickListener {
+                    menuAction(it.itemId)
+                }
+            }
             btnRespond.setOnClickListener {
                 vmMain.respondIncident(requireContext(), incident, latlong)
-            }
-            btnMore.setOnClickListener {
-                showPopUp(it)
             }
             rvList.apply {
                 hasFixedSize()
@@ -94,28 +98,25 @@ class IncidentDetail: BaseFragment<FragmentIncidentDetailBinding>() {
 
     }
 
-    private fun showPopUp(view: View){
-        PopupMenu(requireContext(), view).apply {
-            inflate(R.menu.menu_incident)
-            setOnMenuItemClickListener {
-                when(it.itemId){
-                    R.id.action_completed->{
-                        DialogYesNo(requireContext(), {
-                            vmMain.completeIncident(incidentId)
-                        }).show(getString(R.string.msg_incident_completed))
-                        true
-                    }
-                    R.id.action_invalid->{
-                        DialogYesNo(requireContext(), {
-                            vmMain.invalidIncident(incidentId)
-                        }).show(getString(R.string.msg_incident_invalid))
-                        true
-                    }
-                    else-> false
-                }
+    private fun menuAction(id: Int): Boolean{
+        when(id){
+            R.id.action_track->{
+                findNavController().navigate(
+                    IncidentDetailDirections.actionNavIncidentDetailToNavTrack(incident)
+                )
             }
-            show()
+            R.id.action_completed->{
+                DialogYesNo(requireContext(), {
+                    vmMain.completeIncident(incidentId)
+                }).show(getString(R.string.msg_incident_completed))
+            }
+            R.id.action_invalid->{
+                DialogYesNo(requireContext(), {
+                    vmMain.invalidIncident(incidentId)
+                }).show(getString(R.string.msg_incident_invalid))
+            }
         }
+        return true
     }
 
 
