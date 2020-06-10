@@ -1,17 +1,27 @@
 package com.mjfuring.atlas.service
 
+import android.app.Notification
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.provider.Telephony
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.gson.Gson
+import com.mapbox.android.core.MapboxSdkInfoForUserAgentGenerator
+import com.mjfuring.atlas.MainActivity
+import com.mjfuring.atlas.R
 import com.mjfuring.atlas.common.Commands.REQUEST
 import com.mjfuring.atlas.common.Commands.RESPOND
 import com.mjfuring.atlas.common.IncidentStatus.DUPLICATE
 import com.mjfuring.atlas.common.IncidentStatus.PENDING
-import com.mjfuring.atlas.db.dao.RequestDao
+import com.mjfuring.atlas.common.RespondentStatus
+import com.mjfuring.atlas.db.dao.ContactDao
+import com.mjfuring.atlas.db.dao.IncidentDao
 import com.mjfuring.atlas.db.dao.RespondentDao
 import com.mjfuring.atlas.db.model.Incident
 import com.mjfuring.atlas.db.model.JsonSms
@@ -24,12 +34,16 @@ import timber.log.Timber
 class SmsService : Service(), SmsListener {
 
     private val tag = "Atlas Service:"
-    private val requestDao: RequestDao by inject()
+    private val incidentDao: IncidentDao by inject()
     private val respondentDao: RespondentDao by inject()
+    private val contactDao: ContactDao by inject()
+
     private var serviceListener: ServiceListener? = null
     private var smsReceiver = SmsReceiver()
     private val binder = SmsBinder()
     private var isBound = false
+
+
 
     override fun onCreate() {
         super.onCreate()
@@ -74,13 +88,13 @@ class SmsService : Service(), SmsListener {
                     REQUEST -> {
                         val incident = Incident(
                             ref = ref,
+                            title = nat,
                             number = sender,
                             latitude = lat,
                             longitude = lon,
                             dateCreated = time
                         )
                         isValid = parseRequest(incident)
-
                     }
                     RESPOND -> {
                         val respondent = Respondent(
@@ -91,7 +105,6 @@ class SmsService : Service(), SmsListener {
                             dateReceived = time
                         )
                         isValid = parseResponse(respondent)
-
                     }
                     else -> {
                         Timber.d("$tag Invalid request")
@@ -131,14 +144,14 @@ class SmsService : Service(), SmsListener {
     private fun parseRequest(incident: Incident): Boolean {
         return runBlocking {
             withContext(Dispatchers.Default) {
-                val existing = requestDao.getByRef(incident.ref)
+                val existing = incidentDao.getByRef(incident.ref)
                 if (existing == null){
                     incident.status = PENDING
-                    requestDao.add(incident)
+                    incidentDao.add(incident)
                     true
                 } else {
                     incident.status = DUPLICATE
-                    requestDao.add(incident)
+                    incidentDao.add(incident)
                     false
                 }
 
@@ -149,19 +162,52 @@ class SmsService : Service(), SmsListener {
     private fun parseResponse(respondent: Respondent): Boolean {
         return runBlocking {
             withContext(Dispatchers.Default) {
-                val existing = respondentDao.findDuplicate(respondent.ref, respondent.number)
-                if (existing == null){
-                    respondentDao.add(respondent)
-                    true
-                } else {
-                    false
+                incidentDao.setResponded(respondent.ref)
+                val id = respondentDao.getByNumber(respondent.ref, respondent.number)
+                if (id > 0){
+                    respondent.id = id
+                    respondentDao.updateStatus(id, RespondentStatus.RESPONDING)
+                    showNotification(respondent)
                 }
-
+                false
             }
         }
     }
 
 
+    private fun showNotification(respondent: Respondent){
+
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this,
+            0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
+
+        val builder = NotificationCompat.Builder(this, "channel_id")
+            .setSmallIcon(R.drawable.ic_arrow_back_wide)
+            .setContentTitle("${respondent.number} is responding to incident")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(respondent.id.toInt(), builder.build())
+        }
+
+    }
 }
 
 

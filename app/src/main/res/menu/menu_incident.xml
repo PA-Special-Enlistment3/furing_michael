@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_completed"
+        android:title="@string/mark_completed" />
+
+    <item
+        android:id="@+id/action_invalid"
+        android:title="@string/mark_invalid" />
+
+</menu>

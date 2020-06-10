@@ -9,13 +9,14 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Incident(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
-    var ref: Int = 0,
+    var id: Long = 0,
+    var ref: Long = 0,
     var title: String = "",
     var number: String = "",
     var latitude: Double = 0.0,
     var longitude: Double = 0.0,
     var dateCreated:Long = 0,
+    var dateResponded:Long = 0,
     var dateCompleted:Long = 0,
     var status: Int = 0
 ) : Parcelable

@@ -1,5 +1,6 @@
 package com.mjfuring.atlas.home
 
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -14,13 +15,15 @@ import com.mjfuring.atlas.common.DEFAULT_LON
 import com.mjfuring.atlas.databinding.FragmentHomeBinding
 import com.mjfuring.atlas.databinding.FragmentSplashBinding
 import com.mjfuring.atlas.db.model.Incident
+import com.mjfuring.atlas.db.model.LatLong
+import com.mjfuring.atlas.splash.SplashFragmentDirections
 import com.mjfuring.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
 
     private val vmMain: VmMain by sharedViewModel()
-    private var mapIsReady = false
+    private var currentLoc = LatLong()
 
     override fun layoutRes(): Int = R.layout.fragment_home
     override fun mapRes(): Int = R.id.mapView
@@ -28,7 +31,11 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
     override fun onInit() {
         defaultZoom = DEFAULT_DOWNLOAD_ZOOM
         viewBinding?.apply {
-
+            toolbar.apply {
+                setOnMenuItemClickListener {
+                    menuAction(it.itemId)
+                }
+            }
             observeEvents()
         }
     }
@@ -40,7 +47,6 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
             setUpMarkerLayer(it)
             setUpInfoWindowLayer(it)
             enableLocationComponent(it)
-
         }
         map.addOnMapClickListener {
             onClickIcon(map.projection.toScreenLocation(it))
@@ -52,6 +58,16 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
         vmMain.listRequest()
     }
 
+    override fun onLocationUpdate(latLong: LatLong) {
+        currentLoc = latLong
+    }
+
+    override fun onIconSelected(id: Long){
+        findNavController().navigate(
+            HomeFragmentDirections.actionNavHomeToNavIncidentDetail(id, currentLoc)
+        )
+    }
+
     private fun observeEvents() {
         vmMain.apply {
             observeData<List<Incident>>(listEvent, {
@@ -61,5 +77,15 @@ class HomeFragment: BaseMapFragment<FragmentHomeBinding>() {
         }
     }
 
+    private fun menuAction(id: Int): Boolean{
+        when(id){
+            R.id.action_create -> {
+                findNavController().navigate(
+                   HomeFragmentDirections.actionNavHomeToNavIncidentCreate(currentLoc)
+                )
+            }
+        }
+        return true
+    }
 
 }

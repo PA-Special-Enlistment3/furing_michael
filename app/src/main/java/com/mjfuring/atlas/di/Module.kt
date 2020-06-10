@@ -48,7 +48,7 @@ val appModule = module {
     }
 
     viewModel { VmSetup(get(), get()) }
-    viewModel { VmMain(get()) }
+    viewModel { VmMain(get(), get(), get()) }
 }
 
 

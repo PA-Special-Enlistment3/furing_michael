@@ -20,6 +20,7 @@
     <string name="history">History</string>
     <string name="settings">Settings</string>
     <string name="search_contacts">Search contacts</string>
+    <string name="create_incident">Create Incident</string>
 
 
 
@@ -31,6 +32,8 @@
     <string name="msg_download">Map must be download to properly display locations</string>
     <string name="msg_close_app">Are you sure you want to close this app?</string>
     <string name="msg_permission_not_granted">Some permission are not granted</string>
+    <string name="msg_incident_completed">Are you sure you want to mark this incident as completed</string>
+    <string name="msg_incident_invalid">Are you sure you want to mark this incident as invalid</string>
 
 
 
@@ -39,11 +42,26 @@
     <string name="btn_import">Import Contacts</string>
     <string name="btn_download">Download</string>
     <string name="btn_create">Create</string>
+    <string name="btn_respond">Respond</string>
 
 
 
     <string name="title_report_incident">Create New Incident</string>
     <string name="nature_incident">Nature of Incident</string>
+    <string name="title_incident_detail">Incident Detail</string>
+
+
+    <string name="label_title">Title: </string>
+    <string name="label_stat">Status: </string>
+    <string name="label_reported">Reported By: </string>
+
+
+    <string name="msg_success_respond">Successfully responding to the incident</string>
+    <string name="msg_success_update">Successfully updated the incident</string>
+
+
+    <string name="mark_invalid">Mark as Invalid</string>
+    <string name="mark_completed">Mark as Completed</string>
 
 
 </resources>

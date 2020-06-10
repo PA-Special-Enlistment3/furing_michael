@@ -30,3 +30,7 @@ const val RED_ICON_ID = "RED_ICON_ID"
 const val YELLOW_ICON_ID = "YELLOW_ICON_ID"
 const val BLUE_ICON_ID = "BLUE_ICON_ID"
 
+const val INCIDENT_SMS = "INCIDENT_SMS"
+const val RESPOND_SMS = "RESPOND_SMS"
+
+const val ID = "ID"

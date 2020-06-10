@@ -38,6 +38,7 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.mjfuring.atlas.R
 import com.mjfuring.atlas.db.model.Incident
+import com.mjfuring.atlas.db.model.LatLong
 import com.mjfuring.base.Base
 import com.mjfuring.base.view.Dialog
 
@@ -63,7 +64,8 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
 
     open fun mapReady(map: MapboxMap){}
     open fun onFirstTrack(latLng: LatLng){}
-    open fun onIconSelected(id: Int){}
+    open fun onLocationUpdate(latLong: LatLong){}
+    open fun onIconSelected(id: Long){}
     open fun onCreate(viewBinding: B?){}
 
     @LayoutRes
@@ -249,7 +251,7 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
         }
     }
 
-    fun selectFeatureById(id: Int, callOnSelected: Boolean = false): Boolean {
+    fun selectFeatureById(id: Long, callOnSelected: Boolean = false): Boolean {
         collection?.features()?.apply {
             for (i in 0 until size) {
                 if (this[i].getNumberProperty(PROPERTY_ID) == id) {
@@ -270,7 +272,7 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
         map?.apply {
             val features: List<Feature> = queryRenderedFeatures(screenPoint, MARKER_LAYER_ID)
             if (features.isNotEmpty()){
-                return selectFeatureById(features[0].getNumberProperty(PROPERTY_ID).toInt(), true)
+                return selectFeatureById(features[0].getNumberProperty(PROPERTY_ID).toLong(), true)
             }
         }
         return false
@@ -339,6 +341,7 @@ abstract class BaseMapFragment<B : ViewDataBinding>: Fragment(), Base, Permissio
                         firstTrackSuccess = true
                         onFirstTrack(LatLng(latitude, longitude))
                     }
+                    onLocationUpdate(LatLong(latitude, longitude))
                 }
             }
         }

@@ -8,8 +8,6 @@
         android:layout_height="@dimen/height_60"
         android:background="@color/white"
         android:padding="@dimen/margin_10"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginEnd="@dimen/margin_16"
         android:clickable="true"
         android:focusable="true">
 
@@ -21,19 +19,30 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_status"
-            tools:text="SSC Main" />
+            app:layout_constraintBottom_toTopOf="@id/tv_number"
+            tools:text="Name" />
 
 
         <TextView
-            android:id="@+id/tv_status"
+            android:id="@+id/tv_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/grey_700"
             app:layout_constraintTop_toBottomOf="@id/tv_name"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Needs Assistance" />
+            tools:text="0912345678" />
+
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/margin_6"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Sent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -49,7 +49,35 @@
         android:label="@string/home"
         tools:layout="@layout/fragment_home">
 
+        <action
+            android:id="@+id/action_nav_home_to_nav_incident_detail"
+            app:destination="@id/nav_incident_detail" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_incident_create"
+            app:destination="@id/nav_incident_create" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_incident_create"
+        android:name="com.mjfuring.atlas.incident.IncidentCreate"
+        android:label="@string/title_report_incident"
+        tools:layout="@layout/fragment_incident_create">
+        <argument
+            android:name="latlong"
+            app:argType="com.mjfuring.atlas.db.model.LatLong" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_incident_detail"
+        android:name="com.mjfuring.atlas.incident.IncidentDetail"
+        android:label="@string/title_incident_detail"
+        tools:layout="@layout/fragment_incident_detail">
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <argument
+            android:name="latlong"
+            app:argType="com.mjfuring.atlas.db.model.LatLong" />
+    </fragment>
 
 </navigation>
