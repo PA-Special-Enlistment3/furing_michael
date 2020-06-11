@@ -132,6 +132,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_16"
                 android:textStyle="bold"
+                android:layout_margin="@dimen/margin_20"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
